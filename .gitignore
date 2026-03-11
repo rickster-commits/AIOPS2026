@@ -1,0 +1,67 @@
+# ========================
+#   AIOPS2026 .gitignore
+# ========================
+
+# Wazuh sensitive files
+install-files/
+wazuh-install-files.tar
+*.tar
+*.key
+*.pem
+*.crt
+*.p12
+
+# Passwords & credentials
+*credentials*
+*passwords*
+*.env
+.env*
+secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# Node / npm
+node_modules/
+npm-debug.log*
+.npm/
+
+# Logs
+*.log
+logs/
+/var/log/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup

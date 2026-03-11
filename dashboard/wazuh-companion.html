@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Wazuh AIOps — Presentation Day</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #060a0f;
+    --surface:  #0a1220;
+    --border:   #152236;
+    --accent:   #00c8ff;
+    --green:    #00ff9d;
+    --red:      #ff4466;
+    --muted:    #3a5570;
+    --text:     #c8dcea;
+    --mono:     'Share Tech Mono', monospace;
+    --display:  'Rajdhani', sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Scanline overlay */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,200,255,0.015) 2px, rgba(0,200,255,0.015) 4px);
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(180deg, #0d1e35 0%, #080f1a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(90deg, var(--border) 1px, transparent 1px),
+      linear-gradient(var(--border) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.35;
+  }
+
+  .logo-box {
+    width: 50px; height: 50px;
+    background: linear-gradient(135deg, #005faa, #00c8ff);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 0 24px #00c8ff44;
+    position: relative; flex-shrink: 0;
+  }
+
+  .header-text { position: relative; flex: 1; }
+  .header-title {
+    font-family: var(--display);
+    font-size: 22px; font-weight: 700;
+    color: #fff;
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px #00c8ff66;
+  }
+  .header-sub {
+    font-size: 10px; color: var(--accent);
+    letter-spacing: 4px; margin-top: 3px;
+  }
+
+  .status-pill {
+    position: relative;
+    display: flex; align-items: center; gap: 8px;
+    background: #00ff9d0f;
+    border: 1px solid #00ff9d30;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 10px; color: var(--green);
+    letter-spacing: 2px;
+  }
+
+  .pulse-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green);
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 4px var(--green); opacity: 1; }
+    50%       { box-shadow: 0 0 12px var(--green); opacity: 0.7; }
+  }
+
+  /* TABS */
+  nav {
+    background: #08101a;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    padding: 0 24px;
+  }
+
+  nav button {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12px; letter-spacing: 1.5px;
+    padding: 14px 18px;
+    border-bottom: 2px solid transparent;
+    transition: color .2s, border-color .2s;
+    white-space: nowrap;
+  }
+
+  nav button.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  nav button:hover:not(.active) { color: var(--text); }
+
+  /* MAIN */
+  main { max-width: 740px; margin: 0 auto; padding: 28px 24px 48px; }
+
+  .section-label {
+    font-size: 10px; color: var(--accent);
+    letter-spacing: 3px; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    transition: border-color .2s;
+  }
+
+  .card:hover { border-color: #1e3a56; }
+
+  .card-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .card-label {
+    font-size: 10px; color: var(--muted); letter-spacing: 2px;
+  }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: #030609;
+    border: 1px solid #0f2030;
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--green);
+    letter-spacing: .5px;
+    word-break: break-all;
+    line-height: 1.6;
+  }
+
+  .code-block .prompt { color: var(--muted); margin-right: 6px; }
+
+  /* COPY BUTTON */
+  .copy-btn {
+    background: #ffffff0d;
+    border: 1px solid #ffffff18;
+    color: #778899;
+    font-family: var(--mono);
+    font-size: 10px; letter-spacing: 1px;
+    padding: 4px 12px; border-radius: 4px;
+    cursor: pointer; transition: all .15s;
+    min-width: 60px; text-align: center;
+  }
+  .copy-btn:hover { background: #ffffff18; color: #aabbcc; }
+  .copy-btn.copied {
+    background: #00ff9d15;
+    border-color: #00ff9d55;
+    color: var(--green);
+  }
+
+  /* SERVICE GRID */
+  .service-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-bottom: 20px;
+  }
+
+  .service-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
+    transition: border-color .2s;
+  }
+
+  .service-card:hover { border-color: #00ff9d33; }
+
+  .service-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+
+  .service-name { font-size: 12px; color: var(--text); margin-bottom: 2px; }
+  .service-desc { font-size: 10px; color: var(--muted); }
+
+  /* CREDENTIAL CARDS */
+  .cred-value {
+    font-size: 15px; letter-spacing: 1px; margin-top: 4px;
+  }
+
+  /* CHECKLIST */
+  .check-item {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 15px 20px; margin-bottom: 10px;
+    cursor: pointer;
+    transition: background .2s, border-color .2s;
+    user-select: none;
+  }
+
+  .check-item.done {
+    background: #071a0f;
+    border-color: #00ff9d22;
+  }
+
+  .check-box {
+    width: 20px; height: 20px; border-radius: 5px;
+    border: 2px solid var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all .2s;
+    font-size: 12px;
+  }
+
+  .check-item.done .check-box {
+    border-color: var(--green);
+    background: #00ff9d18;
+    color: var(--green);
+  }
+
+  .check-text {
+    font-size: 13px; color: #8899aa;
+    transition: all .2s;
+  }
+
+  .check-item.done .check-text {
+    color: #00cc7a;
+    text-decoration: line-through;
+    text-decoration-color: #00ff9d55;
+  }
+
+  .progress-bar-wrap {
+    background: #0a1220;
+    border: 1px solid var(--border);
+    border-radius: 6px; height: 6px;
+    margin-bottom: 20px; overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #00c8ff, #00ff9d);
+    border-radius: 6px;
+    transition: width .4s ease;
+    box-shadow: 0 0 10px #00ff9d66;
+  }
+
+  .ready-banner {
+    background: #071a0f;
+    border: 1px solid var(--green);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    font-family: var(--display);
+    font-size: 18px; font-weight: 700;
+    color: var(--green);
+    letter-spacing: 3px;
+    animation: glow 1.4s ease-in-out infinite;
+  }
+
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 10px #00ff9d33; }
+    50%       { box-shadow: 0 0 28px #00ff9d66; }
+  }
+
+  /* HINT BOX */
+  .hint {
+    background: #071a0f;
+    border: 1px solid #00ff9d22;
+    border-radius: 8px; padding: 12px 16px;
+    font-size: 12px; color: #00cc7a;
+    line-height: 1.7; margin-top: 16px;
+  }
+
+  .hint a { color: var(--accent); }
+
+  .warn {
+    background: #1a0a0a;
+    border: 1px solid #ff444433;
+    border-radius: 8px; padding: 12px 16px;
+    font-size: 12px; color: #ff7777;
+    line-height: 1.7; margin-top: 12px;
+  }
+
+  /* PROGRESS COUNTER */
+  .progress-meta {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 10px;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn .25s ease; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-box">🛡</div>
+  <div class="header-text">
+    <div class="header-title">WAZUH AIOPS</div>
+    <div class="header-sub">PRESENTATION DAY LAUNCHER — RICKY ACHOKI</div>
+  </div>
+  <div class="status-pill">
+    <div class="pulse-dot"></div>
+    SYSTEM READY
+  </div>
+</header>
+
+<nav>
+  <button class="active" onclick="switchTab('launch', this)">🚀 LAUNCH</button>
+  <button onclick="switchTab('creds', this)">🔑 CREDENTIALS</button>
+  <button onclick="switchTab('commands', this)">💻 COMMANDS</button>
+  <button onclick="switchTab('checklist', this)">✅ CHECKLIST</button>
+</nav>
+
+<main>
+
+  <!-- LAUNCH TAB -->
+  <div id="tab-launch" class="tab-content active">
+    <div class="section-label">STEP 1 — RUN IN YOUR TERMINAL</div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-label">LAUNCH COMMAND</span>
+        <button class="copy-btn" onclick="copyText(this, 'sudo bash wazuh-launch.sh')">copy</button>
+      </div>
+      <div class="code-block">
+        <span class="prompt">$</span>sudo bash wazuh-launch.sh
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:24px">STEP 2 — EXPECTED SERVICES</div>
+
+    <div class="service-grid">
+      <div class="service-card">
+        <div class="service-dot"></div>
+        <div>
+          <div class="service-name">Wazuh Indexer</div>
+          <div class="service-desc">Data storage layer</div>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-dot" style="animation-delay:.3s"></div>
+        <div>
+          <div class="service-name">Wazuh Manager</div>
+          <div class="service-desc">Core analysis engine</div>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-dot" style="animation-delay:.6s"></div>
+        <div>
+          <div class="service-name">Filebeat</div>
+          <div class="service-desc">Log shipper</div>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-dot" style="animation-delay:.9s"></div>
+        <div>
+          <div class="service-name">Wazuh Dashboard</div>
+          <div class="service-desc">Web interface</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hint">
+      💡 After all services show RUNNING, open your browser at
+      <a href="https://localhost" target="_blank">https://localhost</a> —
+      click <strong>Advanced → Proceed</strong> on the certificate warning.
+    </div>
+  </div>
+
+  <!-- CREDENTIALS TAB -->
+  <div id="tab-creds" class="tab-content">
+    <div class="section-label">DASHBOARD ACCESS CREDENTIALS</div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-label">URL</span>
+        <button class="copy-btn" onclick="copyText(this, 'https://localhost')">copy</button>
+      </div>
+      <div class="cred-value" style="color:#4a9eff">https://localhost</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-label">USERNAME</span>
+        <button class="copy-btn" onclick="copyText(this, 'admin')">copy</button>
+      </div>
+      <div class="cred-value" style="color:#c8dcea">admin</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-label">PASSWORD</span>
+        <button class="copy-btn" id="pass-copy-btn" onclick="copyPassword(this)">copy</button>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; margin-top:4px">
+        <div class="cred-value" id="pass-display" style="color:var(--green); letter-spacing:3px">••••••••••••••••••••</div>
+        <button onclick="togglePass()" style="background:#ffffff0d; border:1px solid #ffffff18; color:#778899; font-family:var(--mono); font-size:10px; padding:4px 10px; border-radius:4px; cursor:pointer; letter-spacing:1px">
+          SHOW
+        </button>
+      </div>
+    </div>
+
+    <div class="warn">🔒 Keep this tab hidden from the audience until you actually need to log in.</div>
+  </div>
+
+  <!-- COMMANDS TAB -->
+  <div id="tab-commands" class="tab-content">
+    <div class="section-label">USEFUL TERMINAL COMMANDS</div>
+
+    <div id="commands-list"></div>
+  </div>
+
+  <!-- CHECKLIST TAB -->
+  <div id="tab-checklist" class="tab-content">
+    <div class="section-label">PRE-PRESENTATION CHECKLIST</div>
+
+    <div class="progress-meta">
+      <span style="font-size:11px; color:var(--muted)">PROGRESS</span>
+      <span id="progress-text" style="font-size:11px; color:var(--accent)">0 / 6</span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+    </div>
+
+    <div id="checklist-items"></div>
+    <div id="ready-banner" style="display:none" class="ready-banner">🚀 YOU'RE READY. GO CRUSH IT!</div>
+  </div>
+
+</main>
+
+<script>
+  // ── DATA ──────────────────────────────────────────────
+  const PASSWORD = '.O0tikFOAddGu50zX?KTX1crNk8B4Wv1'; // Update this if you change your password
+  let passVisible = false;
+
+  const COMMANDS = [
+    { label: 'LAUNCH ALL SERVICES',    cmd: 'sudo bash wazuh-launch.sh' },
+    { label: 'CHECK SERVICE STATUS',   cmd: 'sudo systemctl status wazuh-manager wazuh-indexer wazuh-dashboard filebeat' },
+    { label: 'RESTART ALL SERVICES',   cmd: 'sudo systemctl restart wazuh-manager wazuh-indexer wazuh-dashboard filebeat' },
+    { label: 'VIEW LIVE LOGS',         cmd: 'sudo tail -f /var/ossec/logs/ossec.log' },
+    { label: 'LIST CONNECTED AGENTS',  cmd: 'sudo /var/ossec/bin/agent_control -l' },
+    { label: 'CHECK AGENT STATUS',     cmd: 'sudo /var/ossec/bin/agent_control -i 001' },
+  ];
+
+  const CHECKLIST = [
+    'Run wazuh-launch.sh as sudo',
+    'All 4 services show RUNNING',
+    'Dashboard opens at https://localhost',
+    'At least 1 Windows agent connected',
+    'Demo alert trigger ready',
+    'Presentation slides open',
+  ];
+
+  let checks = Array(CHECKLIST.length).fill(false);
+
+  // ── INIT ──────────────────────────────────────────────
+  window.onload = () => {
+    buildCommands();
+    buildChecklist();
+  };
+
+  function buildCommands() {
+    const wrap = document.getElementById('commands-list');
+    COMMANDS.forEach(item => {
+      wrap.innerHTML += `
+        <div class="card">
+          <div class="card-header">
+            <span class="card-label">${item.label}</span>
+            <button class="copy-btn" onclick="copyText(this, '${item.cmd.replace(/'/g,"\\'")}')">copy</button>
+          </div>
+          <div class="code-block"><span class="prompt">$</span>${item.cmd}</div>
+        </div>`;
+    });
+  }
+
+  function buildChecklist() {
+    const wrap = document.getElementById('checklist-items');
+    CHECKLIST.forEach((text, i) => {
+      const div = document.createElement('div');
+      div.className = 'check-item';
+      div.id = `check-${i}`;
+      div.onclick = () => toggleCheck(i);
+      div.innerHTML = `
+        <div class="check-box" id="box-${i}"></div>
+        <span class="check-text" id="text-${i}">${text}</span>`;
+      wrap.appendChild(div);
+    });
+  }
+
+  // ── TABS ──────────────────────────────────────────────
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // ── COPY ──────────────────────────────────────────────
+  function copyText(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ done';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1600);
+    });
+  }
+
+  function copyPassword(btn) {
+    copyText(btn, PASSWORD);
+  }
+
+  // ── PASSWORD TOGGLE ───────────────────────────────────
+  function togglePass() {
+    passVisible = !passVisible;
+    const el = document.getElementById('pass-display');
+    el.textContent = passVisible ? PASSWORD : '••••••••••••••••••••';
+    event.target.textContent = passVisible ? 'HIDE' : 'SHOW';
+  }
+
+  // ── CHECKLIST ─────────────────────────────────────────
+  function toggleCheck(i) {
+    checks[i] = !checks[i];
+    const item = document.getElementById(`check-${i}`);
+    const box  = document.getElementById(`box-${i}`);
+    item.classList.toggle('done', checks[i]);
+    box.textContent = checks[i] ? '✓' : '';
+
+    const done = checks.filter(Boolean).length;
+    const pct  = Math.round((done / checks.length) * 100);
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = `${done} / ${checks.length}`;
+
+    const banner = document.getElementById('ready-banner');
+    banner.style.display = done === checks.length ? 'block' : 'none';
+  }
+</script>
+</body>
+</html>
