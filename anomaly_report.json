@@ -1,0 +1,60 @@
+{
+  "scan_time": "2026-03-13T07:40:26.389372",
+  "agents_scanned": 3,
+  "anomalies": [
+    {
+      "agent": "ELITEBOOK",
+      "type": "CRITICAL CVE",
+      "severity": "CRITICAL",
+      "detail": "1 critical CVE(s) \u2014 patch immediately",
+      "action": "Run Windows Update and apply all critical patches"
+    },
+    {
+      "agent": "ELITEBOOK",
+      "type": "VULNERABILITY SPIKE",
+      "severity": "HIGH",
+      "detail": "119 high-severity CVEs \u2014 unusually high count",
+      "action": "Schedule urgent patching cycle"
+    },
+    {
+      "agent": "ELITEBOOK",
+      "type": "HIGH RISK ENDPOINT",
+      "severity": "HIGH",
+      "detail": "Risk score 402 exceeds safe threshold (200)",
+      "action": "Perform full security audit on this endpoint"
+    },
+    {
+      "agent": "MICROTOWER",
+      "type": "CONNECTIVITY",
+      "severity": "MEDIUM",
+      "detail": "Agent disconnected at 2026-03-11T16:23:15+00:00",
+      "action": "Restart WazuhSvc on the endpoint"
+    },
+    {
+      "agent": "MICROTOWER",
+      "type": "CRITICAL CVE",
+      "severity": "CRITICAL",
+      "detail": "1 critical CVE(s) \u2014 patch immediately",
+      "action": "Run Windows Update and apply all critical patches"
+    },
+    {
+      "agent": "MICROTOWER",
+      "type": "VULNERABILITY SPIKE",
+      "severity": "HIGH",
+      "detail": "129 high-severity CVEs \u2014 unusually high count",
+      "action": "Schedule urgent patching cycle"
+    },
+    {
+      "agent": "MICROTOWER",
+      "type": "HIGH RISK ENDPOINT",
+      "severity": "HIGH",
+      "detail": "Risk score 433 exceeds safe threshold (200)",
+      "action": "Perform full security audit on this endpoint"
+    }
+  ],
+  "risk_scores": {
+    "Obsidian": 0,
+    "ELITEBOOK": 402,
+    "MICROTOWER": 433
+  }
+}
