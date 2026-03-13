@@ -1,0 +1,17 @@
+id: agent-disconnect
+description: Respond when a Wazuh agent loses connectivity
+
+trigger:
+  type: anomaly
+  filters:
+    - key: type
+      value: CONNECTIVITY
+
+actions:
+  - name: notify
+    message: "Agent {agent} ({ip}) is DISCONNECTED — last keepalive: {keepalive}"
+  - name: remediate
+    message: "On {agent}: open Services → find WazuhSvc → click Start"
+  - name: log
+    file: logs/remediation_log.json
+    message: "Connectivity workflow fired for {agent} at {timestamp}"

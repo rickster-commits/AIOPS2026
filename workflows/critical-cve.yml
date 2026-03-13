@@ -1,0 +1,17 @@
+id: critical-cve-response
+description: Immediate response when a critical CVE is detected on any endpoint
+
+trigger:
+  type: anomaly
+  filters:
+    - key: type
+      value: CRITICAL CVE
+
+actions:
+  - name: notify
+    message: "CRITICAL CVE detected on {agent} ({ip}) — patch immediately"
+  - name: remediate
+    message: "Run Windows Update on {agent} — OS: {os} — Last seen: {keepalive}"
+  - name: log
+    file: logs/remediation_log.json
+    message: "Critical CVE response triggered for {agent} at {timestamp}"

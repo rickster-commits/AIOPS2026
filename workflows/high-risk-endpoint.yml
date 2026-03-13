@@ -1,0 +1,19 @@
+id: high-risk-endpoint
+description: Flag and log any endpoint exceeding the safe risk score threshold
+
+trigger:
+  type: anomaly
+  filters:
+    - key: type
+      value: HIGH RISK ENDPOINT
+
+actions:
+  - name: notify
+    message: "HIGH RISK: {agent} ({ip}) — {detail}"
+  - name: tag
+    tag: REQUIRES-AUDIT
+  - name: remediate
+    message: "Schedule full security audit for {agent} — {os} — Score exceeds 200"
+  - name: log
+    file: logs/remediation_log.json
+    message: "High risk endpoint workflow fired for {agent} at {timestamp}"
