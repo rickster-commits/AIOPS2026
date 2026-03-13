@@ -15,6 +15,8 @@
     --accent:   #00c8ff;
     --green:    #00ff9d;
     --red:      #ff4466;
+    --orange:   #ff9900;
+    --yellow:   #ffdd00;
     --muted:    #3a5570;
     --text:     #c8dcea;
     --mono:     'Share Tech Mono', monospace;
@@ -29,7 +31,6 @@
     overflow-x: hidden;
   }
 
-  /* Scanline overlay */
   body::after {
     content: '';
     position: fixed; inset: 0;
@@ -38,7 +39,6 @@
     z-index: 999;
   }
 
-  /* HEADER */
   header {
     background: linear-gradient(180deg, #0d1e35 0%, #080f1a 100%);
     border-bottom: 1px solid var(--border);
@@ -78,10 +78,7 @@
     letter-spacing: 3px;
     text-shadow: 0 0 20px #00c8ff66;
   }
-  .header-sub {
-    font-size: 10px; color: var(--accent);
-    letter-spacing: 4px; margin-top: 3px;
-  }
+  .header-sub { font-size: 10px; color: var(--accent); letter-spacing: 4px; margin-top: 3px; }
 
   .status-pill {
     position: relative;
@@ -105,7 +102,6 @@
     50%       { box-shadow: 0 0 12px var(--green); opacity: 0.7; }
   }
 
-  /* TABS */
   nav {
     background: #08101a;
     border-bottom: 1px solid var(--border);
@@ -124,15 +120,10 @@
     white-space: nowrap;
   }
 
-  nav button.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
-
+  nav button.active { color: var(--accent); border-bottom-color: var(--accent); }
   nav button:hover:not(.active) { color: var(--text); }
 
-  /* MAIN */
-  main { max-width: 740px; margin: 0 auto; padding: 28px 24px 48px; }
+  main { max-width: 800px; margin: 0 auto; padding: 28px 24px 48px; }
 
   .section-label {
     font-size: 10px; color: var(--accent);
@@ -144,7 +135,6 @@
     background: linear-gradient(90deg, var(--border), transparent);
   }
 
-  /* CARDS */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -153,7 +143,6 @@
     margin-bottom: 14px;
     transition: border-color .2s;
   }
-
   .card:hover { border-color: #1e3a56; }
 
   .card-header {
@@ -161,27 +150,19 @@
     margin-bottom: 12px;
   }
 
-  .card-label {
-    font-size: 10px; color: var(--muted); letter-spacing: 2px;
-  }
+  .card-label { font-size: 10px; color: var(--muted); letter-spacing: 2px; }
 
-  /* CODE BLOCK */
   .code-block {
     background: #030609;
     border: 1px solid #0f2030;
     border-radius: 6px;
     padding: 12px 16px;
     font-family: var(--mono);
-    font-size: 13px;
-    color: var(--green);
-    letter-spacing: .5px;
-    word-break: break-all;
-    line-height: 1.6;
+    font-size: 13px; color: var(--green);
+    letter-spacing: .5px; word-break: break-all; line-height: 1.6;
   }
-
   .code-block .prompt { color: var(--muted); margin-right: 6px; }
 
-  /* COPY BUTTON */
   .copy-btn {
     background: #ffffff0d;
     border: 1px solid #ffffff18;
@@ -193,17 +174,9 @@
     min-width: 60px; text-align: center;
   }
   .copy-btn:hover { background: #ffffff18; color: #aabbcc; }
-  .copy-btn.copied {
-    background: #00ff9d15;
-    border-color: #00ff9d55;
-    color: var(--green);
-  }
+  .copy-btn.copied { background: #00ff9d15; border-color: #00ff9d55; color: var(--green); }
 
-  /* SERVICE GRID */
-  .service-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 12px; margin-bottom: 20px;
-  }
+  .service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
 
   .service-card {
     background: var(--surface);
@@ -212,25 +185,19 @@
     display: flex; align-items: center; gap: 12px;
     transition: border-color .2s;
   }
-
   .service-card:hover { border-color: #00ff9d33; }
 
   .service-dot {
     width: 10px; height: 10px; border-radius: 50%;
-    background: var(--green);
-    flex-shrink: 0;
+    background: var(--green); flex-shrink: 0;
     animation: pulse 1.4s ease-in-out infinite;
   }
 
   .service-name { font-size: 12px; color: var(--text); margin-bottom: 2px; }
   .service-desc { font-size: 10px; color: var(--muted); }
 
-  /* CREDENTIAL CARDS */
-  .cred-value {
-    font-size: 15px; letter-spacing: 1px; margin-top: 4px;
-  }
+  .cred-value { font-size: 15px; letter-spacing: 1px; margin-top: 4px; }
 
-  /* CHECKLIST */
   .check-item {
     display: flex; align-items: center; gap: 14px;
     background: var(--surface);
@@ -241,36 +208,18 @@
     transition: background .2s, border-color .2s;
     user-select: none;
   }
-
-  .check-item.done {
-    background: #071a0f;
-    border-color: #00ff9d22;
-  }
+  .check-item.done { background: #071a0f; border-color: #00ff9d22; }
 
   .check-box {
     width: 20px; height: 20px; border-radius: 5px;
     border: 2px solid var(--muted);
     display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; transition: all .2s;
-    font-size: 12px;
+    flex-shrink: 0; transition: all .2s; font-size: 12px;
   }
+  .check-item.done .check-box { border-color: var(--green); background: #00ff9d18; color: var(--green); }
 
-  .check-item.done .check-box {
-    border-color: var(--green);
-    background: #00ff9d18;
-    color: var(--green);
-  }
-
-  .check-text {
-    font-size: 13px; color: #8899aa;
-    transition: all .2s;
-  }
-
-  .check-item.done .check-text {
-    color: #00cc7a;
-    text-decoration: line-through;
-    text-decoration-color: #00ff9d55;
-  }
+  .check-text { font-size: 13px; color: #8899aa; transition: all .2s; }
+  .check-item.done .check-text { color: #00cc7a; text-decoration: line-through; text-decoration-color: #00ff9d55; }
 
   .progress-bar-wrap {
     background: #0a1220;
@@ -278,25 +227,21 @@
     border-radius: 6px; height: 6px;
     margin-bottom: 20px; overflow: hidden;
   }
-
   .progress-bar {
     height: 100%;
     background: linear-gradient(90deg, #00c8ff, #00ff9d);
-    border-radius: 6px;
-    transition: width .4s ease;
+    border-radius: 6px; transition: width .4s ease;
     box-shadow: 0 0 10px #00ff9d66;
   }
 
   .ready-banner {
     background: #071a0f;
     border: 1px solid var(--green);
-    border-radius: 10px;
-    padding: 20px;
+    border-radius: 10px; padding: 20px;
     text-align: center;
     font-family: var(--display);
     font-size: 18px; font-weight: 700;
-    color: var(--green);
-    letter-spacing: 3px;
+    color: var(--green); letter-spacing: 3px;
     animation: glow 1.4s ease-in-out infinite;
   }
 
@@ -305,35 +250,191 @@
     50%       { box-shadow: 0 0 28px #00ff9d66; }
   }
 
-  /* HINT BOX */
   .hint {
-    background: #071a0f;
-    border: 1px solid #00ff9d22;
+    background: #071a0f; border: 1px solid #00ff9d22;
     border-radius: 8px; padding: 12px 16px;
     font-size: 12px; color: #00cc7a;
     line-height: 1.7; margin-top: 16px;
   }
-
   .hint a { color: var(--accent); }
 
   .warn {
-    background: #1a0a0a;
-    border: 1px solid #ff444433;
+    background: #1a0a0a; border: 1px solid #ff444433;
     border-radius: 8px; padding: 12px 16px;
     font-size: 12px; color: #ff7777;
     line-height: 1.7; margin-top: 12px;
   }
 
-  /* PROGRESS COUNTER */
-  .progress-meta {
-    display: flex; justify-content: space-between;
-    align-items: center; margin-bottom: 10px;
-  }
+  .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 
   .tab-content { display: none; }
   .tab-content.active { display: block; animation: fadeIn .25s ease; }
 
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* ── RESULTS TAB STYLES ─────────────────────────────── */
+
+  .results-toolbar {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 24px; flex-wrap: wrap;
+  }
+
+  .load-btn {
+    background: linear-gradient(135deg, #005faa, #0088cc);
+    border: none; color: #fff;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 2px; padding: 10px 20px;
+    border-radius: 6px; cursor: pointer;
+    transition: all .2s;
+    box-shadow: 0 0 16px #00c8ff33;
+  }
+  .load-btn:hover { box-shadow: 0 0 24px #00c8ff66; transform: translateY(-1px); }
+
+  .scan-meta {
+    font-size: 10px; color: var(--muted); letter-spacing: 1px;
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .scan-meta span { color: var(--accent); }
+
+  /* Stats row */
+  .stats-row {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 12px; margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px;
+    text-align: center;
+    transition: border-color .2s, transform .2s;
+  }
+  .stat-card:hover { border-color: #1e3a56; transform: translateY(-2px); }
+
+  .stat-value {
+    font-family: var(--display);
+    font-size: 32px; font-weight: 700;
+    line-height: 1;
+  }
+  .stat-label { font-size: 9px; color: var(--muted); letter-spacing: 2px; margin-top: 6px; }
+
+  /* Risk bar */
+  .risk-section { margin-bottom: 24px; }
+
+  .risk-bar-row {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 10px;
+  }
+  .risk-agent { width: 100px; font-size: 11px; color: var(--text); flex-shrink: 0; }
+  .risk-bar-wrap { flex: 1; background: #0a1525; border-radius: 4px; height: 20px; overflow: hidden; position: relative; }
+  .risk-bar-fill {
+    height: 100%; border-radius: 4px;
+    transition: width 1s ease;
+    position: relative;
+  }
+  .risk-bar-fill::after {
+    content: attr(data-score);
+    position: absolute; right: 8px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px; font-weight: bold; color: #fff;
+  }
+  .risk-score-val { width: 50px; font-size: 11px; text-align: right; flex-shrink: 0; }
+
+  /* Incident cards */
+  .incident-card {
+    border-radius: 12px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: transform .2s;
+  }
+  .incident-card:hover { transform: translateY(-2px); }
+
+  .incident-header {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .incident-left { display: flex; align-items: center; gap: 12px; }
+
+  .inc-badge {
+    font-family: var(--display);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1px; padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  .inc-name { font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+  .inc-status {
+    font-size: 9px; letter-spacing: 2px;
+    padding: 2px 8px; border-radius: 10px;
+  }
+
+  .chevron { font-size: 12px; transition: transform .3s; color: var(--muted); }
+  .chevron.open { transform: rotate(180deg); }
+
+  .incident-body {
+    display: none;
+    padding: 0 20px 18px;
+  }
+  .incident-body.open { display: block; animation: fadeIn .2s ease; }
+
+  .enrichment-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-bottom: 14px;
+  }
+
+  .enrich-item {
+    background: rgba(0,0,0,0.3);
+    border-radius: 6px; padding: 8px 12px;
+  }
+  .enrich-key { font-size: 9px; color: var(--muted); letter-spacing: 1px; margin-bottom: 2px; }
+  .enrich-val { font-size: 11px; color: var(--text); }
+
+  .anomaly-list { margin-top: 10px; }
+
+  .anomaly-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 11px;
+  }
+  .anomaly-row:last-child { border-bottom: none; }
+
+  .sev-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  .anomaly-type { color: var(--text); flex: 1; }
+  .anomaly-detail { color: var(--muted); font-size: 10px; }
+
+  /* No data */
+  .no-data {
+    text-align: center; padding: 60px 20px;
+    color: var(--muted); font-size: 13px; line-height: 2;
+  }
+  .no-data .big { font-size: 40px; margin-bottom: 12px; }
+
+  /* Severity colors */
+  .sev-critical { color: var(--red); }
+  .sev-high     { color: var(--orange); }
+  .sev-medium   { color: var(--yellow); }
+  .sev-low      { color: var(--green); }
+
+  .bg-critical { background: #1a0510; border: 1px solid #ff446633; }
+  .bg-high     { background: #1a0e00; border: 1px solid #ff990033; }
+  .bg-medium   { background: #1a1600; border: 1px solid #ffdd0033; }
+  .bg-clean    { background: #071a0f; border: 1px solid #00ff9d22; }
+
+  .badge-critical { background: #ff446622; color: var(--red); border: 1px solid #ff446644; }
+  .badge-high     { background: #ff990022; color: var(--orange); border: 1px solid #ff990044; }
+  .badge-medium   { background: #ffdd0022; color: var(--yellow); border: 1px solid #ffdd0044; }
+
+  .status-open     { background: #ff446618; color: var(--red); border: 1px solid #ff446633; }
+  .status-resolved { background: #00ff9d18; color: var(--green); border: 1px solid #00ff9d33; }
+
+  /* Hidden file input */
+  #file-input { display: none; }
 </style>
 </head>
 <body>
@@ -354,6 +455,7 @@
   <button class="active" onclick="switchTab('launch', this)">🚀 LAUNCH</button>
   <button onclick="switchTab('creds', this)">🔑 CREDENTIALS</button>
   <button onclick="switchTab('commands', this)">💻 COMMANDS</button>
+  <button onclick="switchTab('results', this)">📊 LIVE RESULTS</button>
   <button onclick="switchTab('checklist', this)">✅ CHECKLIST</button>
 </nav>
 
@@ -362,47 +464,31 @@
   <!-- LAUNCH TAB -->
   <div id="tab-launch" class="tab-content active">
     <div class="section-label">STEP 1 — RUN IN YOUR TERMINAL</div>
-
     <div class="card">
       <div class="card-header">
         <span class="card-label">LAUNCH COMMAND</span>
         <button class="copy-btn" onclick="copyText(this, 'sudo bash wazuh-launch.sh')">copy</button>
       </div>
-      <div class="code-block">
-        <span class="prompt">$</span>sudo bash wazuh-launch.sh
-      </div>
+      <div class="code-block"><span class="prompt">$</span>sudo bash wazuh-launch.sh</div>
     </div>
 
     <div class="section-label" style="margin-top:24px">STEP 2 — EXPECTED SERVICES</div>
-
     <div class="service-grid">
       <div class="service-card">
         <div class="service-dot"></div>
-        <div>
-          <div class="service-name">Wazuh Indexer</div>
-          <div class="service-desc">Data storage layer</div>
-        </div>
+        <div><div class="service-name">Wazuh Indexer</div><div class="service-desc">Data storage layer</div></div>
       </div>
       <div class="service-card">
         <div class="service-dot" style="animation-delay:.3s"></div>
-        <div>
-          <div class="service-name">Wazuh Manager</div>
-          <div class="service-desc">Core analysis engine</div>
-        </div>
+        <div><div class="service-name">Wazuh Manager</div><div class="service-desc">Core analysis engine</div></div>
       </div>
       <div class="service-card">
         <div class="service-dot" style="animation-delay:.6s"></div>
-        <div>
-          <div class="service-name">Filebeat</div>
-          <div class="service-desc">Log shipper</div>
-        </div>
+        <div><div class="service-name">Filebeat</div><div class="service-desc">Log shipper</div></div>
       </div>
       <div class="service-card">
         <div class="service-dot" style="animation-delay:.9s"></div>
-        <div>
-          <div class="service-name">Wazuh Dashboard</div>
-          <div class="service-desc">Web interface</div>
-        </div>
+        <div><div class="service-name">Wazuh Dashboard</div><div class="service-desc">Web interface</div></div>
       </div>
     </div>
 
@@ -440,9 +526,7 @@
       </div>
       <div style="display:flex; align-items:center; gap:12px; margin-top:4px">
         <div class="cred-value" id="pass-display" style="color:var(--green); letter-spacing:3px">••••••••••••••••••••</div>
-        <button onclick="togglePass()" style="background:#ffffff0d; border:1px solid #ffffff18; color:#778899; font-family:var(--mono); font-size:10px; padding:4px 10px; border-radius:4px; cursor:pointer; letter-spacing:1px">
-          SHOW
-        </button>
+        <button onclick="togglePass()" style="background:#ffffff0d; border:1px solid #ffffff18; color:#778899; font-family:var(--mono); font-size:10px; padding:4px 10px; border-radius:4px; cursor:pointer; letter-spacing:1px">SHOW</button>
       </div>
     </div>
 
@@ -452,8 +536,36 @@
   <!-- COMMANDS TAB -->
   <div id="tab-commands" class="tab-content">
     <div class="section-label">USEFUL TERMINAL COMMANDS</div>
-
     <div id="commands-list"></div>
+  </div>
+
+  <!-- LIVE RESULTS TAB -->
+  <div id="tab-results" class="tab-content">
+    <div class="section-label">ML ENGINE — LIVE ANOMALY RESULTS</div>
+
+    <div class="results-toolbar">
+      <button class="load-btn" onclick="document.getElementById('file-input').click()">
+        📂 LOAD anomaly_report.json
+      </button>
+      <input type="file" id="file-input" accept=".json" onchange="loadReport(event)"/>
+      <div class="scan-meta" id="scan-meta" style="display:none">
+        <span>SCAN: <span id="meta-time">—</span></span>
+        <span>AGENTS: <span id="meta-agents">—</span></span>
+        <span>DURATION: <span id="meta-dur">—</span></span>
+        <span>SCANS ON RECORD: <span id="meta-history">—</span></span>
+      </div>
+    </div>
+
+    <div id="results-content">
+      <div class="no-data">
+        <div class="big">📊</div>
+        Load <strong>anomaly_report.json</strong> from your AIOPS2026 folder<br/>
+        to see live incident data here.<br/><br/>
+        <span style="font-size:10px; color:#223344">
+          File location: ~/AIOPS2026/anomaly_report.json
+        </span>
+      </div>
+    </div>
   </div>
 
   <!-- CHECKLIST TAB -->
@@ -462,7 +574,7 @@
 
     <div class="progress-meta">
       <span style="font-size:11px; color:var(--muted)">PROGRESS</span>
-      <span id="progress-text" style="font-size:11px; color:var(--accent)">0 / 6</span>
+      <span id="progress-text" style="font-size:11px; color:var(--accent)">0 / 7</span>
     </div>
     <div class="progress-bar-wrap">
       <div class="progress-bar" id="progress-bar" style="width:0%"></div>
@@ -475,17 +587,19 @@
 </main>
 
 <script>
-  // ── DATA ──────────────────────────────────────────────
-  const PASSWORD = '.O0tikFOAddGu50zX?KTX1crNk8B4Wv1'; // Update this if you change your password
+  const PASSWORD = 'Wazuh2026-';
   let passVisible = false;
 
   const COMMANDS = [
-    { label: 'LAUNCH ALL SERVICES',    cmd: 'sudo bash wazuh-launch.sh' },
-    { label: 'CHECK SERVICE STATUS',   cmd: 'sudo systemctl status wazuh-manager wazuh-indexer wazuh-dashboard filebeat' },
-    { label: 'RESTART ALL SERVICES',   cmd: 'sudo systemctl restart wazuh-manager wazuh-indexer wazuh-dashboard filebeat' },
-    { label: 'VIEW LIVE LOGS',         cmd: 'sudo tail -f /var/ossec/logs/ossec.log' },
-    { label: 'LIST CONNECTED AGENTS',  cmd: 'sudo /var/ossec/bin/agent_control -l' },
-    { label: 'CHECK AGENT STATUS',     cmd: 'sudo /var/ossec/bin/agent_control -i 001' },
+    { label: 'LAUNCH ALL SERVICES',     cmd: 'sudo bash ~/AIOPS2026/scripts/wazuh-launch.sh' },
+    { label: 'CHECK SERVICE STATUS',    cmd: 'sudo systemctl status wazuh-manager wazuh-indexer wazuh-dashboard filebeat --no-pager | grep Active' },
+    { label: 'LIST AGENTS',             cmd: 'sudo /var/ossec/bin/agent_control -l' },
+    { label: 'RUN ML ENGINE',           cmd: 'cd ~/AIOPS2026 && python3 scripts/aiops_analyzer.py' },
+    { label: 'VIEW SCAN LOG',           cmd: 'tail -50 ~/AIOPS2026/logs/scan.log' },
+    { label: 'VIEW LIVE WAZUH LOGS',    cmd: 'sudo tail -f /var/ossec/logs/ossec.log' },
+    { label: 'RESTART ALL SERVICES',    cmd: 'sudo systemctl restart wazuh-manager wazuh-indexer wazuh-dashboard filebeat' },
+    { label: 'CHECK CRON (AUTO-SCAN)',  cmd: 'crontab -l' },
+    { label: 'VIEW SCAN HISTORY COUNT', cmd: 'cat ~/AIOPS2026/scan_history.json | python3 -c "import json,sys; d=json.load(sys.stdin); print(len(d),\'scans recorded\')"' },
   ];
 
   const CHECKLIST = [
@@ -493,17 +607,15 @@
     'All 4 services show RUNNING',
     'Dashboard opens at https://localhost',
     'At least 1 Windows agent connected',
-    'Demo alert trigger ready',
-    'Presentation slides open',
+    'Run ML engine — anomaly_report.json generated',
+    'Load results in this companion app (LIVE RESULTS tab)',
+    'Presentation slides open and ready',
   ];
 
   let checks = Array(CHECKLIST.length).fill(false);
 
   // ── INIT ──────────────────────────────────────────────
-  window.onload = () => {
-    buildCommands();
-    buildChecklist();
-  };
+  window.onload = () => { buildCommands(); buildChecklist(); };
 
   function buildCommands() {
     const wrap = document.getElementById('commands-list');
@@ -512,7 +624,7 @@
         <div class="card">
           <div class="card-header">
             <span class="card-label">${item.label}</span>
-            <button class="copy-btn" onclick="copyText(this, '${item.cmd.replace(/'/g,"\\'")}')">copy</button>
+            <button class="copy-btn" onclick="copyText(this, \`${item.cmd}\`)">copy</button>
           </div>
           <div class="code-block"><span class="prompt">$</span>${item.cmd}</div>
         </div>`;
@@ -549,34 +661,212 @@
       setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1600);
     });
   }
+  function copyPassword(btn) { copyText(btn, PASSWORD); }
 
-  function copyPassword(btn) {
-    copyText(btn, PASSWORD);
-  }
-
-  // ── PASSWORD TOGGLE ───────────────────────────────────
   function togglePass() {
     passVisible = !passVisible;
-    const el = document.getElementById('pass-display');
-    el.textContent = passVisible ? PASSWORD : '••••••••••••••••••••';
+    document.getElementById('pass-display').textContent = passVisible ? PASSWORD : '••••••••••••••••••••';
     event.target.textContent = passVisible ? 'HIDE' : 'SHOW';
   }
 
   // ── CHECKLIST ─────────────────────────────────────────
   function toggleCheck(i) {
     checks[i] = !checks[i];
-    const item = document.getElementById(`check-${i}`);
-    const box  = document.getElementById(`box-${i}`);
-    item.classList.toggle('done', checks[i]);
+    document.getElementById(`check-${i}`).classList.toggle('done', checks[i]);
+    const box = document.getElementById(`box-${i}`);
     box.textContent = checks[i] ? '✓' : '';
-
     const done = checks.filter(Boolean).length;
     const pct  = Math.round((done / checks.length) * 100);
     document.getElementById('progress-bar').style.width = pct + '%';
     document.getElementById('progress-text').textContent = `${done} / ${checks.length}`;
+    document.getElementById('ready-banner').style.display = done === checks.length ? 'block' : 'none';
+  }
 
-    const banner = document.getElementById('ready-banner');
-    banner.style.display = done === checks.length ? 'block' : 'none';
+  // ══════════════════════════════════════════════════════
+  //   LIVE RESULTS — Load & Render anomaly_report.json
+  // ══════════════════════════════════════════════════════
+
+  function loadReport(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const data = JSON.parse(e.target.result);
+        renderResults(data);
+      } catch (err) {
+        alert('Error parsing JSON: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function renderResults(data) {
+    // Update meta bar
+    const scanTime = new Date(data.scan_time).toLocaleString();
+    document.getElementById('meta-time').textContent    = scanTime;
+    document.getElementById('meta-agents').textContent  = data.agents_scanned;
+    document.getElementById('meta-dur').textContent     = data.scan_duration_s + 's';
+    document.getElementById('meta-history').textContent = '—';
+    document.getElementById('scan-meta').style.display  = 'flex';
+
+    const incidents   = data.incidents   || {};
+    const riskScores  = data.risk_scores || {};
+    const anomalies   = data.anomalies   || [];
+    const stats       = data.stats       || {};
+
+    // Count severities
+    const critCount = anomalies.filter(a => a.severity === 'CRITICAL').length;
+    const highCount = anomalies.filter(a => a.severity === 'HIGH').length;
+    const medCount  = anomalies.filter(a => a.severity === 'MEDIUM').length;
+
+    const incCount  = Object.keys(incidents).length;
+
+    // Build HTML
+    let html = '';
+
+    // ── STATS ROW ──────────────────────────────────────
+    html += `<div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-value" style="color:var(--accent)">${data.agents_scanned}</div>
+        <div class="stat-label">AGENTS SCANNED</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color:var(--red)">${critCount}</div>
+        <div class="stat-label">CRITICAL ALERTS</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color:var(--orange)">${anomalies.length}</div>
+        <div class="stat-label">TOTAL ANOMALIES</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color:var(--yellow)">${incCount}</div>
+        <div class="stat-label">OPEN INCIDENTS</div>
+      </div>
+    </div>`;
+
+    // ── RISK SCORE BARS ────────────────────────────────
+    if (Object.keys(riskScores).length > 0) {
+      const maxScore = Math.max(...Object.values(riskScores), 1);
+      html += `<div class="section-label" style="margin-bottom:14px">RISK SCORES</div>
+               <div class="risk-section">`;
+
+      for (const [agent, score] of Object.entries(riskScores)) {
+        const pct   = Math.round((score / maxScore) * 100);
+        const color = score === 0 ? '#00ff9d'
+                    : score > 400  ? '#ff4466'
+                    : score > 200  ? '#ff9900'
+                    : '#ffdd00';
+        const label = score === 0 ? 'CLEAN' : score > 400 ? 'CRITICAL' : score > 200 ? 'HIGH' : 'MEDIUM';
+        html += `
+          <div class="risk-bar-row">
+            <div class="risk-agent">${agent}</div>
+            <div class="risk-bar-wrap">
+              <div class="risk-bar-fill" style="width:${pct}%; background:${color}; opacity:0.85" data-score="${score}"></div>
+            </div>
+            <div class="risk-score-val" style="color:${color}">${score}</div>
+          </div>`;
+      }
+
+      if (stats.mean !== undefined) {
+        html += `<div style="font-size:10px; color:var(--muted); margin-top:10px; letter-spacing:1px">
+          MEAN: <span style="color:var(--accent)">${stats.mean}</span> &nbsp;·&nbsp;
+          STD DEV: <span style="color:var(--accent)">${stats.std_dev}</span>
+        </div>`;
+      }
+      html += `</div>`;
+    }
+
+    // ── INCIDENTS ──────────────────────────────────────
+    html += `<div class="section-label" style="margin-top:24px; margin-bottom:14px">OPEN INCIDENTS</div>`;
+
+    if (incCount === 0) {
+      html += `<div class="hint" style="text-align:center">✅ No open incidents — all systems normal.</div>`;
+    } else {
+      let incNum = 1;
+      for (const [agent, inc] of Object.entries(incidents)) {
+        const sev      = (inc.highest_severity || 'LOW').toLowerCase();
+        const bgClass  = sev === 'critical' ? 'bg-critical' : sev === 'high' ? 'bg-high' : sev === 'medium' ? 'bg-medium' : 'bg-clean';
+        const badgeCls = sev === 'critical' ? 'badge-critical' : sev === 'high' ? 'badge-high' : 'badge-medium';
+        const sevColor = sev === 'critical' ? 'var(--red)' : sev === 'high' ? 'var(--orange)' : 'var(--yellow)';
+        const e        = inc.enrichment || {};
+        const incId    = `inc-body-${incNum}`;
+
+        html += `
+          <div class="incident-card ${bgClass}">
+            <div class="incident-header" onclick="toggleInc('${incId}', this)">
+              <div class="incident-left">
+                <span class="inc-badge ${badgeCls}">INC-${String(incNum).padStart(3,'0')}</span>
+                <span class="inc-name" style="color:${sevColor}">${agent}</span>
+                <span class="inc-status status-open">OPEN</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:12px">
+                <span style="font-size:10px; color:var(--muted)">${inc.anomaly_count} anomalie(s)</span>
+                <span class="chevron" id="chev-${incId}">▼</span>
+              </div>
+            </div>
+
+            <div class="incident-body" id="${incId}">
+              <div class="enrichment-grid">
+                <div class="enrich-item">
+                  <div class="enrich-key">OPERATING SYSTEM</div>
+                  <div class="enrich-val">${e.os || 'N/A'}</div>
+                </div>
+                <div class="enrich-item">
+                  <div class="enrich-key">IP ADDRESS</div>
+                  <div class="enrich-val" style="color:var(--accent)">${e.ip || 'N/A'}</div>
+                </div>
+                <div class="enrich-item">
+                  <div class="enrich-key">WAZUH VERSION</div>
+                  <div class="enrich-val">${e.version || 'N/A'}</div>
+                </div>
+                <div class="enrich-item">
+                  <div class="enrich-key">LAST KEEPALIVE</div>
+                  <div class="enrich-val">${e.last_keepalive || 'N/A'}</div>
+                </div>
+                <div class="enrich-item">
+                  <div class="enrich-key">GROUP</div>
+                  <div class="enrich-val">${e.group || 'default'}</div>
+                </div>
+                <div class="enrich-item">
+                  <div class="enrich-key">INCIDENT OPENED</div>
+                  <div class="enrich-val">${inc.opened_at ? new Date(inc.opened_at).toLocaleString() : 'N/A'}</div>
+                </div>
+              </div>
+
+              <div style="font-size:9px; color:var(--muted); letter-spacing:2px; margin-bottom:8px">ANOMALIES</div>
+              <div class="anomaly-list">`;
+
+        const incAnomalies = inc.anomalies || [];
+        incAnomalies.forEach(a => {
+          const dotColor = a.severity === 'CRITICAL' ? 'var(--red)'
+                         : a.severity === 'HIGH'     ? 'var(--orange)'
+                         : a.severity === 'MEDIUM'   ? 'var(--yellow)'
+                         : 'var(--green)';
+          html += `
+                <div class="anomaly-row">
+                  <div class="sev-dot" style="background:${dotColor}"></div>
+                  <div class="anomaly-type">${a.type}</div>
+                  <div class="anomaly-detail">${a.detail}</div>
+                </div>`;
+        });
+
+        html += `    </div>
+            </div>
+          </div>`;
+        incNum++;
+      }
+    }
+
+    document.getElementById('results-content').innerHTML = html;
+  }
+
+  function toggleInc(bodyId, header) {
+    const body = document.getElementById(bodyId);
+    const chev = document.getElementById('chev-' + bodyId);
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    if (chev) chev.classList.toggle('open', !isOpen);
   }
 </script>
 </body>
