@@ -1,156 +1,195 @@
-# AIOPS2026 🛡️
+# AIOPS2026 — AI-Powered IT Operations Platform
 
-> **AI-Powered IT Operations Platform** — BSc Information Technology Final Project  
-> Kirinyaga University | 2026
+> A final year BSc Information Technology project — Kirinyaga University, 2026
+
+[![Wazuh](https://img.shields.io/badge/Wazuh-4.14.3-blue?style=flat-square)](https://wazuh.com)
+[![Python](https://img.shields.io/badge/Python-3.12-green?style=flat-square)](https://python.org)
+[![Ubuntu](https://img.shields.io/badge/Ubuntu-24.04%20LTS-orange?style=flat-square)](https://ubuntu.com)
+[![License](https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square)](LICENSE)
 
 ---
 
-## Overview
+## What is AIOPS2026?
 
-AIOPS2026 is an open-source AIOps platform built on top of **Wazuh**, designed to monitor, detect, and respond to security and operational incidents across heterogeneous environments (Ubuntu + Windows endpoints) using AI/ML techniques.
+AIOPS2026 is an open-source AIOps platform that layers a machine learning anomaly detection engine on top of [Wazuh](https://wazuh.com) SIEM/XDR. It monitors heterogeneous endpoints, computes risk scores, detects behavioral anomalies using Z-score analysis, and fires custom alert rules mapped to MITRE ATT&CK — all with zero external Python dependencies.
 
-This project demonstrates how Artificial Intelligence for IT Operations (AIOps) can be applied in real-world infrastructure to:
-- Detect anomalies and security threats in real-time
-- Automate incident response
-- Predict failures before they occur
-- Centralize log management across multiple machines
+Built for small-to-medium enterprises that need intelligent IT operations without commercial tooling costs.
 
 ---
 
 ## Architecture
 
 ```
-Ubuntu Laptop (AIOps Server)
-├── Wazuh Manager       — Core analysis & detection engine
-├── Wazuh Indexer       — Data storage layer (OpenSearch)
-├── Wazuh Dashboard     — Web visualization interface
-├── Filebeat            — Log shipping pipeline
-└── ML Anomaly Layer    — Custom Python anomaly detection
-        │
-        ├── Windows Endpoint 1 (Wazuh Agent)
-        ├── Windows Endpoint 2 (Wazuh Agent)
-        └── Windows Endpoint 3 (Wazuh Agent)
+┌─────────────────────────────────────────────────────┐
+│              PRESENTATION LAYER                     │
+│       Wazuh Dashboard  +  Companion App             │
+├─────────────────────────────────────────────────────┤
+│               ANALYSIS LAYER                        │
+│     Wazuh Manager  +  aiops_analyzer.py (ML)        │
+├─────────────────────────────────────────────────────┤
+│               STORAGE LAYER                         │
+│        Wazuh Indexer (OpenSearch, :9200)            │
+├─────────────────────────────────────────────────────┤
+│              COLLECTION LAYER                       │
+│         Wazuh Agents on Windows Endpoints           │
+└─────────────────────────────────────────────────────┘
+
+Server:     Obsidian     Ubuntu 24.04 LTS   192.168.0.100
+Agent 001:  ELITEBOOK    Windows 10 Ent.    192.168.0.102
+Agent 002:  MICROTOWER   Windows 10 Ent.    192.168.0.125
 ```
 
 ---
 
 ## Features
 
-- 🔍 **Real-time threat detection** across Ubuntu and Windows machines
-- 📊 **Centralized dashboard** with live metrics and alerts
-- 🤖 **ML anomaly detection** layer on top of Wazuh
-- 🔧 **Automated remediation** scripts for common incidents
-- 📋 **Vulnerability assessment** and configuration auditing
-- 📁 **File integrity monitoring** across all endpoints
-- 🚨 **Custom alert rules** tailored for the environment
+- **Vulnerability Risk Scoring** — aggregates CVEs per endpoint using `(Critical×10) + (High×3) + (Medium×1)`
+- **Z-Score Anomaly Detection** — flags endpoints that are statistical outliers vs. their peer group
+- **Absolute Threshold Rules** — catches endpoints with critical CVEs or scores above safe limits regardless of peers
+- **10 Custom Alert Rules** — agent connectivity, brute force, privilege escalation, malware, PowerShell, compound threats
+- **MITRE ATT&CK Mapping** — rules linked to T1562.001 and other tactics
+- **Zero Dependencies** — ML engine uses Python 3.12 stdlib only
+- **Full Scan in < 2 seconds** — across the 3-endpoint test environment
 
 ---
 
-## Project Structure
+## Results
+
+| Endpoint | Critical | High | Medium | Risk Score | Status |
+|----------|----------|------|--------|------------|--------|
+| ELITEBOOK | 1 | 119 | 35 | **402** | ⚠️ At Risk |
+| MICROTOWER | 1 | 129 | 36 | **433** | ⚠️ At Risk |
+| Obsidian (Server) | 0 | 0 | 0 | **0** | ✅ Clean |
+
+**7 anomalies detected** in a single scan · Mean risk score: 278.3 · Std dev: 197.2
+
+---
+
+## Repository Structure
 
 ```
 AIOPS2026/
-├── agents/             # Agent configuration & deployment guides
-├── dashboard/          # Companion app & dashboard configs
-│   └── wazuh-companion.html  # Presentation day launcher app
-├── docs/               # Documentation & research notes
-├── research/           # Research paper, findings & references
-├── scripts/            # Automation & utility scripts
-│   └── wazuh-launch.sh       # One-click service launcher
-└── install-files/      # Original Wazuh installation files
+├── scripts/
+│   ├── aiops_analyzer.py       # ML anomaly detection engine
+│   ├── local_rules.xml         # Custom Wazuh alert rules (100000–100060)
+│   └── wazuh-launch.sh         # One-click service launcher
+├── dashboard/
+│   └── wazuh-companion.html    # Presentation day companion app
+├── docs/
+│   ├── AIOPS2026_Research_Paper.docx
+│   └── AIOPS2026_Presentation.pptx
+├── agents/
+│   └── windows-agent-setup.md  # Agent enrollment guide
+├── research/                   # Supporting literature
+└── README.md
 ```
 
 ---
 
-## Getting Started
+## Quick Start
 
-### Prerequisites
-- Ubuntu 22.04 / 24.04 LTS
-- Minimum 4GB RAM (8GB+ recommended)
-- 50GB free disk space
-- Internet connection
+### 1. Prerequisites
 
-### Installation
+- Ubuntu 24.04 LTS
+- 8GB+ RAM (16GB recommended)
+- 50GB+ free disk space
 
-**1. Clone the repository:**
+### 2. Install Wazuh (all-in-one)
+
 ```bash
-git clone https://github.com/rickster-commits/AIOPS2026.git
-cd AIOPS2026
-```
-
-**2. Install Wazuh (all-in-one):**
-```bash
-curl -sO https://packages.wazuh.com/4.11/wazuh-install.sh
+curl -sO https://packages.wazuh.com/4.14/wazuh-install.sh
 sudo bash wazuh-install.sh -a
 ```
 
-**3. Launch all services:**
+### 3. Launch services
+
 ```bash
-chmod +x scripts/wazuh-launch.sh
 sudo bash scripts/wazuh-launch.sh
 ```
 
-**4. Access the dashboard:**
+Dashboard available at `https://localhost`
+
+### 4. Enroll Windows agents
+
+Follow the guide in [`agents/windows-agent-setup.md`](agents/windows-agent-setup.md)
+
+### 5. Load custom rules
+
+```bash
+sudo cp scripts/local_rules.xml /var/ossec/etc/rules/local_rules.xml
+sudo systemctl restart wazuh-manager
 ```
-URL:      https://localhost
-Username: admin
-Password: [generated during install]
+
+### 6. Run the ML anomaly detection engine
+
+```bash
+python3 scripts/aiops_analyzer.py
+```
+
+Results are printed to terminal and saved to `anomaly_report.json`.
+
+---
+
+## ML Engine — How It Works
+
+```
+1. Authenticate with Wazuh REST API (port 55000)
+2. Enumerate all active agents
+3. Query Wazuh Indexer for vulnerability state data
+   POST https://localhost:9200/wazuh-states-vulnerabilities-*/_search
+4. Compute risk score per endpoint
+   Risk Score = (Critical × 10) + (High × 3) + (Medium × 1)
+5. Run Z-score cross-endpoint analysis
+   Z = (Score − Mean) ÷ Std Dev   →   Flag if Z > 2.5
+6. Apply absolute threshold rules
+   - Any Critical CVE present → flag
+   - High CVE count > 50     → flag
+   - Risk score > 200        → flag
+7. Output report + write anomaly_report.json
 ```
 
 ---
 
-## Connecting Windows Agents
+## Custom Alert Rules
 
-1. Download the Wazuh Windows agent from the dashboard
-2. Run the installer on the Windows machine
-3. Point it to your Ubuntu server IP
-4. Agent appears in dashboard within 60 seconds
-
-Full guide: [`agents/windows-agent-setup.md`](agents/windows-agent-setup.md)
-
----
-
-## Tech Stack
-
-| Component | Technology |
-|---|---|
-| SIEM / XDR | Wazuh 4.11 |
-| Data Storage | OpenSearch (Wazuh Indexer) |
-| Visualization | Wazuh Dashboard |
-| Log Shipping | Filebeat |
-| ML Layer | Python 3.12, scikit-learn |
-| Scripting | Bash |
-| OS | Ubuntu 24.04 LTS |
+| Rule ID | Level | Description | MITRE |
+|---------|-------|-------------|-------|
+| 100001 | 12 | Agent disconnected | T1562.001 |
+| 100002 | 12 | Agent stopped | T1562.001 |
+| 100003 | 6 | Agent reconnected | — |
+| 100010 | 10 | Multiple failed logins (brute force) | T1110 |
+| 100020 | 12 | New user account created | T1136 |
+| 100021 | 14 | User added to Administrators group | T1078 |
+| 100030 | 15 | Malware detected by Windows Defender | T1587 |
+| 100040 | 12 | Suspicious PowerShell execution | T1059.001 |
+| 100060 | 14 | 5+ anomalies on same endpoint within 5 min | Compound |
 
 ---
 
-## Research
+## Team
 
-This project accompanies a research paper exploring the integration of ML techniques with Wazuh for enhanced anomaly detection. Key research areas:
+| Name | Reg No |
+|------|--------|
+| Alfrick Achoki | CT100/G/14089/21 |
+| Shadrack Kithua Ndunguu | CT100/G/15934/22 |
+| Maureen Mwangi | CT100/G/17587/22 |
+| Njuguna Peter | CT100/G/15912/22 |
+| Kimutai Nahashon | CT100/G/15975/22 |
 
-- AIOps frameworks and methodologies
-- ML-based anomaly detection in SIEM systems
-- Automated incident response patterns
-- Performance evaluation of detection accuracy
-
-Paper: [`research/aiops2026-paper.pdf`](research/aiops2026-paper.pdf) *(coming soon)*
-
----
-
-## Author
-
-**Alfrick Achoki (Ricky)**  
-BSc Information Technology  
-Kirinyaga University  
-Registration: CT100/G/14089/89  
-GitHub: [@rickster-commits](https://github.com/rickster-commits)
+**Supervisor:** Jotham Wasike
+**Institution:** Kirinyaga University — BSc Information Technology
 
 ---
 
-## License
+## References
 
-MIT License — free to use, modify, and distribute with attribution.
+1. Wazuh Inc., "Wazuh Documentation v4.14," 2026. https://documentation.wazuh.com
+2. Y. Dang, Q. Lin, P. Huang, "AIOps: Real-World Challenges and Research Innovations," ICSE-SEIP, 2019.
+3. P. Notaro, J. Cardoso, M. Gerndt, "A Survey of AIOps Methods for Failure Management," ACM TIST, 2021.
+4. V. Chandola, A. Banerjee, V. Kumar, "Anomaly Detection: A Survey," ACM Computing Surveys, 2009.
+5. F. T. Liu, K. M. Ting, Z. H. Zhou, "Isolation Forest," ICDM, 2008.
+6. NIST, "National Vulnerability Database," https://nvd.nist.gov
 
 ---
 
-> *Built with 🔥 on Ubuntu 24.04 — because real AIOps runs on real iron.*
+*Built with Wazuh · Python · Ubuntu · No commercial tools required*
