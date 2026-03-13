@@ -1,0 +1,109 @@
+<!-- AIOPS2026 Custom Rules - Alfrick Achoki -->
+<group name="aiops2026,agent_status,">
+
+ <rule id="100000" level="5">
+    <if_sid>5716</if_sid>
+    <srcip>1.1.1.1</srcip>
+    <description>sshd: authentication failed from IP 1.1.1.1.</description>
+    <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,</group>
+  </rule>
+
+  <rule id="100001" level="12">
+    <if_sid>504</if_sid>
+    <description>AIOPS2026: Agent disconnected - endpoint requires attention</description>
+    <group>agent_disconnected,connectivity,</group>
+  </rule>
+
+  <rule id="100002" level="12">
+    <if_sid>506</if_sid>
+    <description>AIOPS2026: Agent stopped - possible service disruption detected</description>
+    <group>agent_stopped,connectivity,</group>
+  </rule>
+
+  <rule id="100003" level="6">
+    <if_sid>501</if_sid>
+    <description>AIOPS2026: Agent reconnected after disconnection</description>
+    <group>agent_reconnected,connectivity,</group>
+  </rule>
+
+  <!-- ─────────────────────────────────────────
+       BRUTE FORCE / AUTHENTICATION RULES
+       ───────────────────────────────────────── -->
+
+  <rule id="100010" level="10" frequency="5" timeframe="120">
+    <if_matched_sid>60122</if_matched_sid>
+    <description>AIOPS2026: Multiple failed logins detected - possible brute force attack</description>
+    <group>brute_force,authentication,</group>
+  </rule>
+
+  <rule id="100011" level="12">
+    <if_sid>60122</if_sid>
+    <match>Administrator</match>
+    <description>AIOPS2026: Failed login attempt on Administrator account</description>
+    <group>admin_bruteforce,authentication,</group>
+  </rule>
+
+  <!-- ─────────────────────────────────────────
+       USER / PRIVILEGE RULES
+       ───────────────────────────────────────── -->
+
+  <rule id="100020" level="12">
+    <if_sid>60106</if_sid>
+    <description>AIOPS2026: New user account created on endpoint</description>
+    <group>user_management,privilege,</group>
+  </rule>
+
+  <rule id="100021" level="14">
+    <if_sid>60107</if_sid>
+    <description>AIOPS2026: User added to Administrators group - privilege escalation</description>
+    <group>privilege_escalation,user_management,</group>
+  </rule>
+
+  <!-- ─────────────────────────────────────────
+       WINDOWS DEFENDER / MALWARE RULES
+       ───────────────────────────────────────── -->
+
+  <rule id="100030" level="15">
+    <if_sid>61116</if_sid>
+    <description>AIOPS2026: Malware detected by Windows Defender - immediate action required</description>
+    <group>malware,threat,</group>
+  </rule>
+
+  <rule id="100031" level="12">
+    <if_sid>61108</if_sid>
+    <description>AIOPS2026: Windows Defender disabled - endpoint unprotected</description>
+    <group>malware,threat,defense_evasion,</group>
+  </rule>
+
+  <!-- ─────────────────────────────────────────
+       SUSPICIOUS ACTIVITY RULES
+       ───────────────────────────────────────── -->
+
+  <rule id="100040" level="12">
+    <if_sid>91520</if_sid>
+    <description>AIOPS2026: Suspicious PowerShell execution detected</description>
+    <group>powershell,suspicious,</group>
+  </rule>
+
+  <rule id="100041" level="10">
+    <if_sid>657</if_sid>
+    <description>AIOPS2026: High number of file changes - possible ransomware activity</description>
+    <group>fim,ransomware,suspicious,</group>
+  </rule>
+
+  <!-- ─────────────────────────────────────────
+       SYSTEM HEALTH RULES
+       ───────────────────────────────────────── -->
+
+
+  <!-- ─────────────────────────────────────────
+       AIOPS INTELLIGENCE RULES
+       ───────────────────────────────────────── -->
+
+  <rule id="100060" level="14" frequency="5" timeframe="300">
+    <if_matched_group>aiops2026</if_matched_group>
+    <description>AIOPS2026: Multiple anomalies detected on same endpoint within 5 minutes - critical threat pattern</description>
+    <group>aiops_alert,threat_pattern,</group>
+  </rule>
+
+</group>
